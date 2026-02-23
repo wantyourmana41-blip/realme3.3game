@@ -1,163 +1,1138 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="th">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>realme 3.3 Lucky Code Game</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>realme 3.3 Lucky Code Game (Lock Result)</title>
+  <style>
+    :root{
+      --bg1:#050912;
+      --bg2:#081a2f;
+      --card: rgba(8, 16, 39, .72);
+      --stroke: rgba(94, 215, 255, .28);
+      --text:#e9f3ff;
+      --muted:#a9c3e6;
 
-<style>
-body{
-    margin:0;
-    font-family:Arial, Helvetica, sans-serif;
-    background:#FFC915;
-    color:#000;
-}
+      --neonA:#5ee3ff;   /* cyan */
+      --neonB:#5b7cff;   /* blue */
+      --neonC:#89ffdb;   /* mint */
+      --good:#89ffdb;
+      --bad:#ff7a7a;
+      --warn:#ffd37a;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Thai", Arial;
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
 
-/* ===== Header ===== */
-.header{
-    text-align:center;
-    padding:40px 20px 20px;
-}
+      background:
+        radial-gradient(1200px 700px at 15% 15%, rgba(91,124,255,.35), transparent 60%),
+        radial-gradient(1000px 650px at 85% 25%, rgba(94,227,255,.25), transparent 60%),
+        radial-gradient(900px 600px at 55% 85%, rgba(137,255,219,.18), transparent 55%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+      overflow-x:hidden;
+    }
+    body:before{
+      content:"";
+      position:fixed;
+      inset:0;
+      background-image:
+        radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,.55) 50%, transparent 52%),
+        radial-gradient(1px 1px at 30% 70%, rgba(255,255,255,.35) 50%, transparent 52%),
+        radial-gradient(1px 1px at 55% 35%, rgba(255,255,255,.40) 50%, transparent 52%),
+        radial-gradient(1px 1px at 80% 60%, rgba(255,255,255,.35) 50%, transparent 52%),
+        radial-gradient(1px 1px at 90% 15%, rgba(255,255,255,.35) 50%, transparent 52%),
+        radial-gradient(1px 1px at 15% 90%, rgba(255,255,255,.30) 50%, transparent 52%);
+      opacity:.45;
+      pointer-events:none;
+    }
 
-.header img{
-    width:180px;
-}
+    /* ===== Page Layout ===== */
+    .wrap{
+      width:min(980px, 100%);
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
 
-.header h1{
-    margin:20px 0 10px;
-    font-size:28px;
-    font-weight:800;
-}
+    .hero{
+      position:relative;
+      border-radius:24px;
+      border:1px solid rgba(94,227,255,.22);
+      background:
+        radial-gradient(900px 380px at 50% 0%, rgba(94,227,255,.10), transparent 60%),
+        linear-gradient(180deg, rgba(7,16,40,.88), rgba(5,10,24,.92));
+      overflow:hidden;
+      padding:16px 16px 14px;
+    }
+    .heroGlow{
+      position:absolute;
+      inset:-55%;
+      background: conic-gradient(from 0deg,
+        rgba(94,227,255,.55),
+        rgba(137,255,219,.35),
+        rgba(91,124,255,.40),
+        rgba(94,227,255,.55)
+      );
+      filter: blur(50px);
+      animation: spin 7s linear infinite;
+      opacity:.20;
+      pointer-events:none;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
 
-.header p{
-    margin:0;
-    font-size:14px;
-}
+    .heroInner{
+      position:relative;
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:14px;
+      align-items:center;
+    }
 
-/* ===== Main Card ===== */
-.card{
-    max-width:500px;
-    margin:30px auto;
-    background:#fff;
-    padding:30px;
-    border-radius:20px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.15);
-    text-align:center;
-}
+    .heroTitle{
+      margin:0;
+      font-size:22px;
+      font-weight:950;
+      line-height:1.15;
+    }
+    .heroTitle .glow{
+      color: var(--neonA);
+      text-shadow: 0 0 10px rgba(94,227,255,.45), 0 0 24px rgba(91,124,255,.25);
+    }
+    .heroSub{
+      margin:8px 0 0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.55;
+      max-width:560px;
+    }
 
-.card h2{
-    margin-bottom:10px;
-}
+    .heroBadges{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:10px;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:7px 12px;
+      border-radius:999px;
+      border:1px solid rgba(94,227,255,.22);
+      background: rgba(0,0,0,.18);
+      font-size:12px;
+      color:var(--muted);
+      user-select:none;
+      white-space:nowrap;
+    }
 
-input{
-    width:100%;
-    padding:14px;
-    border-radius:12px;
-    border:1px solid #ddd;
-    font-size:14px;
-    margin-top:10px;
-}
+    .heroArt{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:6px 0;
+    }
+    .phoneImg{
+      width:min(320px, 100%);
+      max-height:280px;
+      object-fit:contain;
+      filter: drop-shadow(0 20px 40px rgba(0,0,0,.65));
+      transform: translateY(4px);
+    }
 
-button{
-    width:100%;
-    padding:14px;
-    border:none;
-    border-radius:12px;
-    background:#000;
-    color:#FFC915;
-    font-weight:bold;
-    font-size:14px;
-    margin-top:15px;
-    cursor:pointer;
-}
+    @media (max-width: 820px){
+      .heroInner{ grid-template-columns: 1fr; }
+      .heroArt{ order:-1; }
+      .phoneImg{ max-height:240px; }
+    }
 
-button:hover{
-    opacity:0.85;
-}
+    /* ===== Main Card ===== */
+    .card{
+      width:100%;
+      background:var(--card);
+      border:1px solid var(--stroke);
+      border-radius:22px;
+      padding:18px;
+      box-shadow: 0 18px 60px rgba(0,0,0,.45);
+      backdrop-filter: blur(10px);
+    }
 
-.result{
-    margin-top:20px;
-    padding:15px;
-    border-radius:12px;
-    background:#F5F5F5;
-    display:none;
-}
+    .top{
+      display:flex;
+      gap:14px;
+      align-items:flex-start;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      margin-bottom:12px;
+    }
+    .title{
+      margin:0;
+      font-size:18px;
+      font-weight:950;
+      line-height:1.2;
+    }
+    .sub{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.45;
+      max-width:720px;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:7px 12px;
+      border-radius:999px;
+      border:1px solid rgba(94,227,255,.28);
+      background: rgba(0,0,0,.18);
+      font-size:12px;
+      color:var(--muted);
+      user-select:none;
+      white-space:nowrap;
+    }
+    .ok{color:var(--good)}
+    .err{color:var(--bad)}
+    .warn{color:var(--warn)}
 
-/* ===== Prize Section ===== */
-.prize{
-    max-width:800px;
-    margin:60px auto;
-    text-align:center;
-}
+    .slot{
+      position:relative;
+      border-radius:20px;
+      border:1px solid rgba(94,227,255,.22);
+      overflow:hidden;
+      padding:18px;
+      background:
+        radial-gradient(900px 320px at 50% 0%, rgba(94,227,255,.10), transparent 55%),
+        linear-gradient(180deg, rgba(7,16,40,.85), rgba(5,10,24,.92));
+      min-height:320px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      gap:12px;
+    }
 
-.prize img{
-    width:280px;
-    max-width:90%;
-    margin:20px 0;
-}
+    .glowRing{
+      position:absolute;
+      inset:-45%;
+      background: conic-gradient(from 0deg,
+        rgba(94,227,255,.45),
+        rgba(137,255,219,.35),
+        rgba(91,124,255,.35),
+        rgba(94,227,255,.45)
+      );
+      filter: blur(40px);
+      animation: spin 6s linear infinite;
+      opacity:.25;
+      pointer-events:none;
+    }
 
-.prize ul{
-    list-style:none;
-    padding:0;
-    font-size:14px;
-}
+    .window{
+      width:min(680px, 100%);
+      border-radius:18px;
+      border:1px solid rgba(94,227,255,.25);
+      background: rgba(7, 15, 35, .85);
+      padding:14px;
+      position:relative;
+      overflow:hidden;
+      box-shadow: inset 0 0 0 1px rgba(91,124,255,.14);
+    }
+    .window:before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(180deg, rgba(255,255,255,.08), transparent 35%, rgba(0,0,0,.25));
+      pointer-events:none;
+    }
 
-.prize li{
-    margin:8px 0;
-}
-</style>
+    .tickerSmall{
+      height:24px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--muted);
+      font-weight:800;
+      font-size:12px;
+    }
+    .tickerBig{
+      min-height:64px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      font-size:24px;
+      font-weight:950;
+      padding:6px 10px;
+      letter-spacing:.2px;
+      text-shadow: 0 0 18px rgba(94,227,255,.20);
+    }
+
+    .row{
+      width:min(680px, 100%);
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      justify-content:center;
+    }
+    input{
+      flex: 1 1 360px;
+      width:100%;
+      border-radius:16px;
+      border:1px solid rgba(94,227,255,.20);
+      background: rgba(6, 12, 28, .95);
+      color:var(--text);
+      padding:11px 12px;
+      outline:none;
+      font-size:14px;
+      box-shadow: inset 0 0 0 1px rgba(91,124,255,.12);
+    }
+    input::placeholder{ color: rgba(169,195,230,.65); }
+
+    .actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      justify-content:center;
+    }
+    button{
+      border:1px solid rgba(94,227,255,.22);
+      background: linear-gradient(180deg, rgba(26,42,85,.92), rgba(12,25,55,.92));
+      color:var(--text);
+      padding:11px 14px;
+      border-radius:16px;
+      cursor:pointer;
+      font-weight:950;
+      letter-spacing:.2px;
+      box-shadow:
+        0 10px 24px rgba(0,0,0,.28),
+        inset 0 0 0 1px rgba(91,124,255,.12);
+    }
+    button:hover{filter:brightness(1.08)}
+    button:disabled{opacity:.5; cursor:not-allowed}
+    .primary{
+      border-color: rgba(94,227,255,.38);
+      background: linear-gradient(180deg, rgba(46,115,255,.95), rgba(26,59,179,.95));
+      box-shadow:
+        0 0 0 1px rgba(94,227,255,.12),
+        0 14px 30px rgba(46,115,255,.20);
+    }
+    .ghost{ background: rgba(0,0,0,.12); }
+
+    .result{
+      margin-top:8px;
+      width:min(680px, 100%);
+      border-radius:18px;
+      border:1px dashed rgba(94,227,255,.35);
+      padding:14px;
+      text-align:center;
+      background: rgba(94,227,255,.08);
+    }
+    .result .label{ color:var(--muted); font-size:12px; margin-bottom:6px; }
+    .result .gift{ font-size:20px; font-weight:950; line-height:1.2; }
+
+    .hint{
+      width:min(680px, 100%);
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.55;
+      text-align:center;
+      margin-top:6px;
+    }
+
+    /* ===== Prize Section ===== */
+    .prizes{
+      width:100%;
+      border-radius:22px;
+      border:1px solid rgba(94,227,255,.18);
+      background: rgba(0,0,0,.12);
+      padding:14px;
+    }
+    .prizeHead{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+    .prizeTitle{
+      margin:0;
+      font-weight:950;
+      font-size:14px;
+    }
+    .prizeNote{
+      margin:0;
+      color:var(--muted);
+      font-size:12px;
+    }
+    .prizeGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+      align-items:center;
+    }
+    .giftImg{
+      width:100%;
+      max-height:220px;
+      object-fit:contain;
+      filter: drop-shadow(0 16px 32px rgba(0,0,0,.55));
+      background: rgba(255,255,255,.02);
+      border-radius:18px;
+      border:1px solid rgba(94,227,255,.12);
+      padding:10px;
+    }
+    .prizeList{
+      border-radius:18px;
+      border:1px solid rgba(94,227,255,.12);
+      background: rgba(7, 15, 35, .55);
+      padding:12px;
+    }
+    .prizeList ul{
+      margin:8px 0 0 18px;
+      padding:0;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.6;
+    }
+    .prizeList li{ margin:4px 0; }
+    @media (max-width: 820px){
+      .prizeGrid{ grid-template-columns: 1fr; }
+      .giftImg{ max-height:200px; }
+    }
+
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:18px;
+      transform:translateX(-50%);
+      background: rgba(6, 12, 28, .98);
+      border:1px solid rgba(94,227,255,.20);
+      border-radius:16px;
+      padding:10px 12px;
+      color:var(--text);
+      font-size:13px;
+      box-shadow:0 14px 40px rgba(0,0,0,.45);
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .2s ease, transform .2s ease;
+    }
+    .toast.show{
+      opacity:1;
+      transform:translateX(-50%) translateY(-6px);
+    }
+  </style>
 </head>
 
 <body>
+  <div class="wrap">
 
-<div class="header">
-    <img src="phone.png">
-    <h1>realme 3.3 MEGA CAMPAIGN</h1>
-    <p>กรอก Lucky Code เพื่อดูผลรางวัลของคุณ<br>
-    1 โค้ด = 1 สิทธิ์ (สุ่มได้ครั้งเดียว)</p>
-</div>
+    <!-- ===== HERO (ทำให้เว็บไม่โล่ง) ===== -->
+    <div class="hero">
+      <div class="heroGlow"></div>
+      <div class="heroInner">
+        <div>
+          <h2 class="heroTitle">realme <span class="glow">3.3</span> MEGA CAMPAIGN — Lucky Code Game</h2>
+          <p class="heroSub">
+            กรอก Lucky Code เพื่อดูผลรางวัลของคุณ (โค้ด 1 อัน สุ่มได้ครั้งเดียวและ “ล็อกผล” ไว้เลย)
+            <br/>ทีมงานจะดำเนินการจัดส่งโค้ดของรางวัลให้ภายในวันที่ <b>13 มีนาคม 2026</b>
+          </p>
+          <div class="heroBadges">
+            <span class="badge">⚡ POWER MODE ON</span>
+            <span class="badge">🔒 1 โค้ด = 1 สิทธิ์ (ล็อกผล)</span>
+            <span class="badge">🎁 ของรางวัลจำนวนจำกัด</span>
+          </div>
+        </div>
 
-<div class="card">
-    <h2>Lucky Code Game</h2>
-    <input id="codeInput" placeholder="กรอกโค้ดของคุณ">
-    <button onclick="spin()">ยืนยันและสุ่มรางวัล</button>
-
-    <div class="result" id="resultBox">
-        <b id="resultText"></b>
+        <div class="heroArt">
+          <!-- เปลี่ยนชื่อไฟล์ให้ตรงกับที่อัปโหลด -->
+          <img src="phone.png" class="phoneImg" alt="realme phone" />
+        </div>
+      </div>
     </div>
-</div>
 
-<div class="prize">
-    <h2>ของรางวัลกิจกรรม</h2>
-    <img src="gift.png">
-    <ul>
-        <li>🎁 realme Fan</li>
-        <li>🎁 realme Cross Body Bag</li>
-        <li>🎁 realme Gray Bag</li>
-        <li>😢 เสียใจด้วยคุณไม่ได้รับรางวัล</li>
-    </ul>
-</div>
+    <!-- ===== GAME CARD ===== -->
+    <div class="card">
+      <div class="top">
+        <div>
+          <h1 class="title">กรอกโค้ดเพื่อเล่นเกม</h1>
+          <p class="sub">ระบบจะแสดงผลเดิมทันทีถ้าโค้ดนี้เคยสุ่มแล้ว เพื่อป้องกันการสุ่มซ้ำจนได้ของที่ต้องการ</p>
+        </div>
+        <div class="pill">
+          <span>สถานะ:</span>
+          <b id="accessState" class="warn">ยังไม่ปลดล็อก</b>
+        </div>
+      </div>
 
-<script>
-const gifts = [
-    "🎁 คุณได้รับ realme Fan",
-    "🎁 คุณได้รับ realme Cross Body Bag",
-    "🎁 คุณได้รับ realme Gray Bag",
-    "😢 เสียใจด้วย คุณไม่ได้รับรางวัล"
-];
+      <div class="slot">
+        <div class="glowRing"></div>
 
-function spin(){
-    const code = document.getElementById("codeInput").value.trim();
-    if(code === ""){
-        alert("กรุณากรอกโค้ด");
-        return;
+        <div class="window">
+          <div class="tickerSmall" id="tickerSmall">กรอกโค้ดเพื่อเล่น</div>
+          <div class="tickerBig" id="tickerBig">ใส่โค้ด แล้วกด “ยืนยันโค้ด”</div>
+        </div>
+
+        <div class="row">
+          <input id="codeInput" placeholder="กรอกโค้ด เช่น REAL111A1" autocomplete="off" />
+          <button id="btnVerify" class="primary">ยืนยันโค้ด</button>
+        </div>
+
+        <div class="actions">
+          <button id="btnSpin" class="primary" disabled>สุ่มของแถม</button>
+          <button id="btnCopy" class="ghost" disabled>คัดลอกผลลัพธ์</button>
+          <button id="btnReset" class="ghost">รีเซ็ตหน้าจอ</button>
+        </div>
+
+        <div class="result" id="resultBox" style="display:none;">
+          <div class="label">🎉 ผลลัพธ์ของคุณ</div>
+          <div class="gift" id="resultText">-</div>
+        </div>
+
+        <div class="hint">
+          *ถ้าโค้ดนี้เคยสุ่มแล้ว ระบบจะแสดงผลเดิมทันที (ไม่สุ่มใหม่) เพื่อกันกดซ้ำหาไอเทมที่ต้องการ<br>
+          *หมายเหตุ: กันซ้ำระดับ “เครื่อง/เบราว์เซอร์เดียว” (localStorage)
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PRIZES (เติมพื้นที่ให้ไม่โล่ง) ===== -->
+    <div class="prizes">
+      <div class="prizeHead">
+        <p class="prizeTitle">🎁 ของรางวัล Lucky Code</p>
+        <p class="prizeNote">*รางวัลมีจำนวนจำกัด ตามเงื่อนไขกิจกรรม</p>
+      </div>
+
+      <div class="prizeGrid">
+        <!-- เปลี่ยนชื่อไฟล์ให้ตรงกับที่อัปโหลด -->
+        <img src="gift.png" class="giftImg" alt="gift" />
+
+        <div class="prizeList">
+          <b style="color:var(--text)">รายการของรางวัล</b>
+          <ul>
+            <li>realme Fan — 10 ชิ้น</li>
+            <li>realme cross body bag — 10 ชิ้น</li>
+            <li>realme gray bag — 10 ชิ้น</li>
+            <li>เสียใจด้วยคุณไม่ได้รับรางวัล — 100</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="toast" id="toast">คัดลอกแล้ว</div>
+
+  <script>
+    // ===== 1) โค้ดที่อนุญาต =====
+    // ใส่ลิสต์เต็มของคุณได้เลย (ผมเว้นไว้ตามที่คุณใช้อยู่)
+    const ALLOWED_CODES_RAW = `
+REAL111A1
+REAL112A2
+REAL113A3
+REAL114A4
+REAL115A5
+REAL116A6
+REAL117A7
+REAL118A8
+REAL119A9
+REAL120A10
+REAL121A11
+REAL122A12
+REAL123A13
+REAL124A14
+REAL125A15
+REAL126A16
+REAL127A17
+REAL128A18
+REAL129A19
+REAL130A20
+REAL131A21
+REAL132A22
+REAL133A23
+REAL134A24
+REAL135A25
+REAL136A26
+REAL137A27
+REAL138A28
+REAL139A29
+REAL140A30
+REAL141A31
+REAL142A32
+REAL143A33
+REAL144A34
+REAL145A35
+REAL146A36
+REAL147A37
+REAL148A38
+REAL149A39
+REAL150A40
+REAL151A41
+REAL152A42
+REAL153A43
+REAL154A44
+REAL155A45
+REAL156A46
+REAL157A47
+REAL158A48
+REAL159A49
+REAL160A50
+REAL161A51
+REAL162A52
+REAL163A53
+REAL164A54
+REAL165A55
+REAL166A56
+REAL167A57
+REAL168A58
+REAL169A59
+REAL170A60
+REAL171A61
+REAL172A62
+REAL173A63
+REAL174A64
+REAL175A65
+REAL176A66
+REAL177A67
+REAL178A68
+REAL179A69
+REAL180A70
+REAL181A71
+REAL182A72
+REAL183A73
+REAL184A74
+REAL185A75
+REAL186A76
+REAL187A77
+REAL188A78
+REAL189A79
+REAL190A80
+REAL191A81
+REAL192A82
+REAL193A83
+REAL194A84
+REAL195A85
+REAL196A86
+REAL197A87
+REAL198A88
+REAL199A89
+REAL200A90
+REAL201A91
+REAL202A92
+REAL203A93
+REAL204A94
+REAL205A95
+REAL206A96
+REAL207A97
+REAL208A98
+REAL209A99
+REAL209A100
+REAL209A101
+REAL209A102
+REAL209A103
+REAL209A104
+REAL209A105
+REAL209A106
+REAL209A107
+REAL209A108
+REAL209A109
+REAL209A110
+REAL209A111
+REAL209A112
+REAL209A113
+REAL209A114
+REAL209A115
+REAL209A116
+REAL209A117
+REAL209A118
+REAL209A119
+REAL209A120
+REAL209A121
+REAL209A122
+REAL209A123
+REAL209A124
+REAL209A125
+REAL209A126
+REAL209A127
+REAL209A128
+REAL209A129
+REAL209A130
+REAL209A131
+REAL209A132
+REAL209A133
+REAL209A134
+REAL209A135
+REAL209A136
+REAL209A137
+REAL209A138
+REAL209A139
+REAL209A140
+REAL209A141
+REAL209A142
+REAL209A143
+REAL209A144
+REAL209A145
+REAL209A146
+REAL209A147
+REAL209A148
+REAL209A149
+REAL209A150
+REAL209A151
+REAL209A152
+REAL209A153
+REAL209A154
+REAL209A155
+REAL209A156
+REAL209A157
+REAL209A158
+REAL209A159
+REAL209A160
+REAL209A161
+REAL209A162
+REAL209A163
+REAL209A164
+REAL209A165
+REAL209A166
+REAL209A167
+REAL209A168
+REAL209A169
+REAL209A170
+REAL209A171
+REAL209A172
+REAL209A173
+REAL209A174
+REAL209A175
+REAL209A176
+REAL209A177
+REAL209A178
+REAL209A179
+REAL209A180
+REAL209A181
+REAL209A182
+REAL209A183
+REAL209A184
+REAL209A185
+REAL209A186
+REAL209A187
+REAL209A188
+REAL209A189
+REAL209A190
+REAL209A191
+REAL209A192
+REAL209A193
+REAL209A194
+REAL209A195
+REAL209A196
+REAL209A197
+REAL209A198
+REAL209A199
+REAL209A200
+REAL209A201
+REAL209A202
+REAL209A203
+REAL209A204
+REAL209A205
+REAL209A206
+REAL209A207
+REAL209A208
+REAL209A209
+REAL209A210
+REAL209A211
+REAL209A212
+REAL209A213
+REAL209A214
+REAL209A215
+REAL209A216
+REAL209A217
+REAL209A218
+REAL209A219
+REAL209A220
+REAL209A221
+REAL209A222
+REAL209A223
+REAL209A224
+REAL209A225
+REAL209A226
+REAL209A227
+REAL209A228
+REAL209A229
+REAL209A230
+REAL209A231
+REAL209A232
+REAL209A233
+REAL209A234
+REAL209A235
+REAL209A236
+REAL209A237
+REAL209A238
+REAL209A239
+REAL209A240
+REAL209A241
+REAL209A242
+REAL209A243
+REAL209A244
+REAL209A245
+REAL209A246
+REAL209A247
+REAL209A248
+REAL209A249
+REAL209A250
+REAL209A251
+REAL209A252
+REAL209A253
+REAL209A254
+REAL209A255
+REAL209A256
+REAL209A257
+REAL209A258
+REAL209A259
+REAL209A260
+REAL209A261
+REAL209A262
+REAL209A263
+REAL209A264
+REAL209A265
+REAL209A266
+REAL209A267
+REAL209A268
+REAL209A269
+REAL209A270
+REAL209A271
+REAL209A272
+REAL209A273
+REAL209A274
+REAL209A275
+REAL209A276
+REAL209A277
+REAL209A278
+REAL209A279
+REAL209A280
+REAL209A281
+REAL209A282
+REAL209A283
+REAL209A284
+REAL209A285
+REAL209A286
+REAL209A287
+REAL209A288
+REAL209A289
+REAL209A290
+REAL209A291
+REAL209A292
+REAL209A293
+REAL209A294
+REAL209A295
+REAL209A296
+REAL209A297
+REAL209A298
+REAL209A299
+REAL209A300
+REAL209A301
+REAL209A302
+REAL209A303
+REAL209A304
+REAL209A305
+REAL209A306
+REAL209A307
+REAL209A308
+REAL209A309
+REAL209A310
+REAL209A311
+REAL209A312
+REAL209A313
+REAL209A314
+REAL209A315
+REAL209A316
+REAL209A317
+REAL209A318
+REAL209A319
+REAL209A320
+REAL209A321
+REAL209A322
+REAL209A323
+REAL209A324
+REAL209A325
+REAL209A326
+REAL209A327
+REAL209A328
+REAL209A329
+REAL209A330
+REAL209A331
+REAL209A332
+REAL209A333
+REAL209A334
+REAL209A335
+REAL209A336
+REAL209A337
+REAL209A338
+REAL209A339
+REAL209A340
+REAL209A341
+REAL209A342
+REAL209A343
+REAL209A344
+REAL209A345
+REAL209A346
+REAL209A347
+REAL209A348
+REAL209A349
+REAL209A350
+REAL209A351
+REAL209A352
+REAL209A353
+REAL209A354
+REAL209A355
+REAL209A356
+REAL209A357
+REAL209A358
+REAL209A359
+REAL209A360
+REAL209A361
+REAL209A362
+REAL209A363
+REAL209A364
+REAL209A365
+REAL209A366
+REAL209A367
+REAL209A368
+REAL209A369
+REAL209A370
+REAL209A371
+REAL209A372
+REAL209A373
+REAL209A374
+REAL209A375
+REAL209A376
+REAL209A377
+REAL209A378
+REAL209A379
+REAL209A380
+REAL209A381
+REAL209A382
+REAL209A383
+REAL209A384
+REAL209A385
+REAL209A386
+REAL209A387
+REAL209A388
+REAL209A389
+REAL209A390
+REAL209A391
+REAL209A392
+REAL209A393
+REAL209A394
+REAL209A395
+REAL209A396
+REAL209A397
+REAL209A398
+REAL209A399
+REAL209A400
+REAL209A401
+REAL209A402
+REAL209A403
+REAL209A404
+REAL209A405
+`.trim();
+
+    // ===== 2) รางวัลตามจำนวนที่กำหนด =====
+    const GIFTS = [
+      { name: "🎁 คุณได้รับ: realme Fan", weight: 10 },
+      { name: "🎁 คุณได้รับ: realme cross body bag", weight: 10 },
+      { name: "🎁 คุณได้รับ: realme gray bag", weight: 10 },
+      { name: "😢 เสียใจด้วยคุณไม่ได้รับรางวัล", weight: 100 },
+    ];
+
+    // ===== Helpers =====
+    const $ = (id) => document.getElementById(id);
+
+    function toast(msg){
+      const t = $("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(()=>t.classList.remove("show"), 1300);
+    }
+    function normalizeCode(s){ return (s || "").trim().toUpperCase(); }
+    function parseAllowedCodes(raw){
+      return new Set(raw.split(/\s+/).map(x=>x.trim().toUpperCase()).filter(Boolean));
+    }
+    function pickWeighted(items){
+      const total = items.reduce((s,i)=>s+i.weight, 0);
+      let r = Math.random() * total;
+      for(const it of items){ r -= it.weight; if(r <= 0) return it; }
+      return items[items.length-1];
     }
 
-    const randomGift = gifts[Math.floor(Math.random() * gifts.length)];
-    document.getElementById("resultText").innerText = randomGift;
-    document.getElementById("resultBox").style.display = "block";
-}
-</script>
+    // ===== Storage: "LOCK RESULT" by code =====
+    const LS_KEY_RESULT = "realme_33_locked_results_v1";
 
+    function loadResults(){
+      try{ return JSON.parse(localStorage.getItem(LS_KEY_RESULT) || "{}"); }
+      catch(e){ return {}; }
+    }
+    function saveResults(obj){
+      localStorage.setItem(LS_KEY_RESULT, JSON.stringify(obj));
+    }
+    function getLockedResult(code){
+      const r = loadResults();
+      return r[code] || "";
+    }
+    function lockResult(code, resultText){
+      const r = loadResults();
+      r[code] = resultText;
+      saveResults(r);
+    }
+
+    // ===== State =====
+    const ALLOWED = parseAllowedCodes(ALLOWED_CODES_RAW);
+    let unlockedCode = "";
+    let spinning = false;
+    let lastResult = "";
+
+    function setTicker(small, big){
+      $("tickerSmall").textContent = small;
+      $("tickerBig").textContent = big;
+    }
+    function setAccessState(text, cls){
+      const el = $("accessState");
+      el.className = cls;
+      el.textContent = text;
+    }
+    function showResult(text){
+      $("resultText").textContent = text;
+      $("resultBox").style.display = "block";
+    }
+    function hideResult(){
+      $("resultBox").style.display = "none";
+      $("resultText").textContent = "-";
+    }
+    function updateButtons(){
+      const locked = unlockedCode ? !!getLockedResult(unlockedCode) : false;
+      $("btnSpin").disabled = !(unlockedCode && !spinning && !locked);
+      $("btnCopy").disabled = !lastResult;
+    }
+
+    function verifyCode(){
+      const code = normalizeCode($("codeInput").value);
+      if(!code){ toast("กรุณากรอกโค้ด"); return; }
+
+      if(!ALLOWED.has(code)){
+        unlockedCode = "";
+        lastResult = "";
+        hideResult();
+        setAccessState("โค้ดไม่ถูกต้อง", "err");
+        setTicker("โค้ดไม่ถูกต้อง", "กรุณาลองใหม่");
+        updateButtons();
+        return;
+      }
+
+      unlockedCode = code;
+
+      const locked = getLockedResult(code);
+      if(locked){
+        lastResult = locked;
+        setAccessState("โค้ดนี้เคยสุ่มแล้ว (ล็อกผล)", "warn");
+        setTicker("แสดงผลเดิมอัตโนมัติ ✅", "โค้ดนี้สุ่มซ้ำไม่ได้");
+        showResult(locked);
+        updateButtons();
+        toast("โค้ดนี้มีผลลัพธ์แล้ว");
+        return;
+      }
+
+      lastResult = "";
+      hideResult();
+      setAccessState("ปลดล็อกแล้ว ✅", "ok");
+      setTicker("ปลดล็อกสิทธิ์แล้ว", "กด “สุ่มของแถม” ได้เลย (สุ่มได้ครั้งเดียว)");
+      updateButtons();
+      toast("ยืนยันโค้ดสำเร็จ");
+    }
+
+    async function spin(){
+      if(spinning || !unlockedCode) return;
+
+      const locked = getLockedResult(unlockedCode);
+      if(locked){
+        lastResult = locked;
+        setAccessState("โค้ดนี้เคยสุ่มแล้ว (ล็อกผล)", "warn");
+        setTicker("สุ่มซ้ำไม่ได้", "แสดงผลเดิมให้แล้ว");
+        showResult(locked);
+        updateButtons();
+        return;
+      }
+
+      spinning = true;
+      updateButtons();
+      hideResult();
+
+      const duration = 2800;
+      const startSpeed = 45;
+
+      setTicker("กำลังสุ่ม…", "⚡ POWER MODE ON");
+      const start = performance.now();
+
+      while(true){
+        const now = performance.now();
+        const t = (now - start) / duration;
+        if(t >= 1) break;
+
+        const display = GIFTS[Math.floor(Math.random() * GIFTS.length)].name
+          .replace("🎁 คุณได้รับ: ","")
+          .replace("😢 ","");
+        setTicker("กำลังสุ่ม…", display);
+
+        const delay = startSpeed + (t*t) * 220;
+        await new Promise(res => setTimeout(res, delay));
+      }
+
+      const winner = pickWeighted(GIFTS).name;
+      lastResult = winner;
+      lockResult(unlockedCode, winner);
+
+      setTicker("ผลลัพธ์", "🎉 ได้แล้ว! (ล็อกผล)");
+      showResult(winner);
+      setAccessState("สำเร็จ ✅ (โค้ดถูกล็อกผลแล้ว)", "ok");
+
+      spinning = false;
+      updateButtons();
+    }
+
+    $("btnVerify").addEventListener("click", verifyCode);
+    $("codeInput").addEventListener("keydown", (e)=>{ if(e.key === "Enter") verifyCode(); });
+    $("btnSpin").addEventListener("click", spin);
+
+    $("btnCopy").addEventListener("click", async ()=>{
+      if(!lastResult){ toast("ยังไม่มีผลลัพธ์"); return; }
+      try{
+        await navigator.clipboard.writeText(lastResult);
+        toast("คัดลอกผลลัพธ์แล้ว");
+      }catch(e){
+        const ta = document.createElement("textarea");
+        ta.value = lastResult;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        ta.remove();
+        toast("คัดลอกผลลัพธ์แล้ว");
+      }
+    });
+
+    $("btnReset").addEventListener("click", ()=>{
+      unlockedCode = "";
+      lastResult = "";
+      $("codeInput").value = "";
+      setAccessState("ยังไม่ปลดล็อก", "warn");
+      setTicker("กรอกโค้ดเพื่อเล่น", "ใส่โค้ด แล้วกด “ยืนยันโค้ด”");
+      hideResult();
+      updateButtons();
+      toast("รีเซ็ตหน้าจอแล้ว");
+    });
+
+    updateButtons();
+  </script>
 </body>
 </html>
