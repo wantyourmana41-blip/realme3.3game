@@ -12,8 +12,10 @@
       --stroke: rgba(94, 215, 255, .28);
       --text:#e9f3ff;
       --muted:#a9c3e6;
-      --neonA:#5ee3ff;
-      --neonB:#5b7cff;
+
+      --neonA:#5ee3ff;   /* cyan */
+      --neonB:#5b7cff;   /* blue */
+      --neonC:#89ffdb;   /* mint */
       --good:#89ffdb;
       --bad:#ff7a7a;
       --warn:#ffd37a;
@@ -28,6 +30,7 @@
       align-items:center;
       justify-content:center;
       padding:20px;
+
       background:
         radial-gradient(1200px 700px at 15% 15%, rgba(91,124,255,.35), transparent 60%),
         radial-gradient(1000px 650px at 85% 25%, rgba(94,227,255,.25), transparent 60%),
@@ -37,7 +40,8 @@
     }
     body:before{
       content:"";
-      position:fixed; inset:0;
+      position:fixed;
+      inset:0;
       background-image:
         radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,.55) 50%, transparent 52%),
         radial-gradient(1px 1px at 30% 70%, rgba(255,255,255,.35) 50%, transparent 52%),
@@ -45,10 +49,113 @@
         radial-gradient(1px 1px at 80% 60%, rgba(255,255,255,.35) 50%, transparent 52%),
         radial-gradient(1px 1px at 90% 15%, rgba(255,255,255,.35) 50%, transparent 52%),
         radial-gradient(1px 1px at 15% 90%, rgba(255,255,255,.30) 50%, transparent 52%);
-      opacity:.45; pointer-events:none;
+      opacity:.45;
+      pointer-events:none;
     }
+
+    /* ===== Page Layout ===== */
+    .wrap{
+      width:min(980px, 100%);
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .hero{
+      position:relative;
+      border-radius:24px;
+      border:1px solid rgba(94,227,255,.22);
+      background:
+        radial-gradient(900px 380px at 50% 0%, rgba(94,227,255,.10), transparent 60%),
+        linear-gradient(180deg, rgba(7,16,40,.88), rgba(5,10,24,.92));
+      overflow:hidden;
+      padding:16px 16px 14px;
+    }
+    .heroGlow{
+      position:absolute;
+      inset:-55%;
+      background: conic-gradient(from 0deg,
+        rgba(94,227,255,.55),
+        rgba(137,255,219,.35),
+        rgba(91,124,255,.40),
+        rgba(94,227,255,.55)
+      );
+      filter: blur(50px);
+      animation: spin 7s linear infinite;
+      opacity:.20;
+      pointer-events:none;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    .heroInner{
+      position:relative;
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:14px;
+      align-items:center;
+    }
+
+    .heroTitle{
+      margin:0;
+      font-size:22px;
+      font-weight:950;
+      line-height:1.15;
+    }
+    .heroTitle .glow{
+      color: var(--neonA);
+      text-shadow: 0 0 10px rgba(94,227,255,.45), 0 0 24px rgba(91,124,255,.25);
+    }
+    .heroSub{
+      margin:8px 0 0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.55;
+      max-width:560px;
+    }
+
+    .heroBadges{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:10px;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:7px 12px;
+      border-radius:999px;
+      border:1px solid rgba(94,227,255,.22);
+      background: rgba(0,0,0,.18);
+      font-size:12px;
+      color:var(--muted);
+      user-select:none;
+      white-space:nowrap;
+    }
+
+    .heroArt{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:6px 0;
+    }
+    .phoneImg{
+      width:min(320px, 100%);
+      max-height:280px;
+      object-fit:contain;
+      filter: drop-shadow(0 20px 40px rgba(0,0,0,.65));
+      transform: translateY(4px);
+    }
+
+    @media (max-width: 820px){
+      .heroInner{ grid-template-columns: 1fr; }
+      .heroArt{ order:-1; }
+      .phoneImg{ max-height:240px; }
+    }
+
+    /* ===== Main Card ===== */
     .card{
-      width:min(940px, 100%);
+      width:100%;
       background:var(--card);
       border:1px solid var(--stroke);
       border-radius:22px;
@@ -56,21 +163,45 @@
       box-shadow: 0 18px 60px rgba(0,0,0,.45);
       backdrop-filter: blur(10px);
     }
+
     .top{
-      display:flex; gap:14px; align-items:flex-start; justify-content:space-between;
-      flex-wrap:wrap; margin-bottom:12px;
+      display:flex;
+      gap:14px;
+      align-items:flex-start;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      margin-bottom:12px;
     }
-    h1{ margin:0; font-size:20px; font-weight:950; line-height:1.2; }
-    .glow{ color:var(--neonA); text-shadow: 0 0 10px rgba(94,227,255,.45), 0 0 24px rgba(91,124,255,.25); }
-    .sub{ margin:6px 0 0; color:var(--muted); font-size:13px; line-height:1.45; max-width:720px; }
+    .title{
+      margin:0;
+      font-size:18px;
+      font-weight:950;
+      line-height:1.2;
+    }
+    .sub{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.45;
+      max-width:720px;
+    }
     .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:7px 12px; border-radius:999px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:7px 12px;
+      border-radius:999px;
       border:1px solid rgba(94,227,255,.28);
       background: rgba(0,0,0,.18);
-      font-size:12px; color:var(--muted); user-select:none; white-space:nowrap;
+      font-size:12px;
+      color:var(--muted);
+      user-select:none;
+      white-space:nowrap;
     }
-    .ok{color:var(--good)} .err{color:var(--bad)} .warn{color:var(--warn)}
+    .ok{color:var(--good)}
+    .err{color:var(--bad)}
+    .warn{color:var(--warn)}
+
     .slot{
       position:relative;
       border-radius:20px;
@@ -80,15 +211,17 @@
       background:
         radial-gradient(900px 320px at 50% 0%, rgba(94,227,255,.10), transparent 55%),
         linear-gradient(180deg, rgba(7,16,40,.85), rgba(5,10,24,.92));
-      min-height:340px;
+      min-height:320px;
       display:flex;
       flex-direction:column;
       justify-content:center;
       align-items:center;
       gap:12px;
     }
+
     .glowRing{
-      position:absolute; inset:-45%;
+      position:absolute;
+      inset:-45%;
       background: conic-gradient(from 0deg,
         rgba(94,227,255,.45),
         rgba(137,255,219,.35),
@@ -97,9 +230,10 @@
       );
       filter: blur(40px);
       animation: spin 6s linear infinite;
-      opacity:.25; pointer-events:none;
+      opacity:.25;
+      pointer-events:none;
     }
-    @keyframes spin{to{transform:rotate(360deg)}}
+
     .window{
       width:min(680px, 100%);
       border-radius:18px;
@@ -111,18 +245,46 @@
       box-shadow: inset 0 0 0 1px rgba(91,124,255,.14);
     }
     .window:before{
-      content:""; position:absolute; inset:0;
+      content:"";
+      position:absolute;
+      inset:0;
       background: linear-gradient(180deg, rgba(255,255,255,.08), transparent 35%, rgba(0,0,0,.25));
       pointer-events:none;
     }
-    .tickerSmall{ height:24px; display:flex; align-items:center; justify-content:center; color:var(--muted); font-weight:800; font-size:12px; }
-    .tickerBig{ min-height:64px; display:flex; align-items:center; justify-content:center; text-align:center; font-size:24px; font-weight:950; padding:6px 10px; }
+
+    .tickerSmall{
+      height:24px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--muted);
+      font-weight:800;
+      font-size:12px;
+    }
+    .tickerBig{
+      min-height:64px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      font-size:24px;
+      font-weight:950;
+      padding:6px 10px;
+      letter-spacing:.2px;
+      text-shadow: 0 0 18px rgba(94,227,255,.20);
+    }
+
     .row{
       width:min(680px, 100%);
-      display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:center;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      justify-content:center;
     }
     input{
-      flex:1 1 360px;
+      flex: 1 1 360px;
+      width:100%;
       border-radius:16px;
       border:1px solid rgba(94,227,255,.20);
       background: rgba(6, 12, 28, .95);
@@ -133,7 +295,13 @@
       box-shadow: inset 0 0 0 1px rgba(91,124,255,.12);
     }
     input::placeholder{ color: rgba(169,195,230,.65); }
-    .actions{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; }
+
+    .actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      justify-content:center;
+    }
     button{
       border:1px solid rgba(94,227,255,.22);
       background: linear-gradient(180deg, rgba(26,42,85,.92), rgba(12,25,55,.92));
@@ -142,16 +310,22 @@
       border-radius:16px;
       cursor:pointer;
       font-weight:950;
-      box-shadow: 0 10px 24px rgba(0,0,0,.28), inset 0 0 0 1px rgba(91,124,255,.12);
+      letter-spacing:.2px;
+      box-shadow:
+        0 10px 24px rgba(0,0,0,.28),
+        inset 0 0 0 1px rgba(91,124,255,.12);
     }
     button:hover{filter:brightness(1.08)}
     button:disabled{opacity:.5; cursor:not-allowed}
     .primary{
       border-color: rgba(94,227,255,.38);
       background: linear-gradient(180deg, rgba(46,115,255,.95), rgba(26,59,179,.95));
-      box-shadow: 0 0 0 1px rgba(94,227,255,.12), 0 14px 30px rgba(46,115,255,.20);
+      box-shadow:
+        0 0 0 1px rgba(94,227,255,.12),
+        0 14px 30px rgba(46,115,255,.20);
     }
     .ghost{ background: rgba(0,0,0,.12); }
+
     .result{
       margin-top:8px;
       width:min(680px, 100%);
@@ -163,6 +337,7 @@
     }
     .result .label{ color:var(--muted); font-size:12px; margin-bottom:6px; }
     .result .gift{ font-size:20px; font-weight:950; line-height:1.2; }
+
     .hint{
       width:min(680px, 100%);
       font-size:12px;
@@ -171,68 +346,192 @@
       text-align:center;
       margin-top:6px;
     }
+
+    /* ===== Prize Section ===== */
+    .prizes{
+      width:100%;
+      border-radius:22px;
+      border:1px solid rgba(94,227,255,.18);
+      background: rgba(0,0,0,.12);
+      padding:14px;
+    }
+    .prizeHead{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+    .prizeTitle{
+      margin:0;
+      font-weight:950;
+      font-size:14px;
+    }
+    .prizeNote{
+      margin:0;
+      color:var(--muted);
+      font-size:12px;
+    }
+    .prizeGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+      align-items:center;
+    }
+    .giftImg{
+      width:100%;
+      max-height:220px;
+      object-fit:contain;
+      filter: drop-shadow(0 16px 32px rgba(0,0,0,.55));
+      background: rgba(255,255,255,.02);
+      border-radius:18px;
+      border:1px solid rgba(94,227,255,.12);
+      padding:10px;
+    }
+    .prizeList{
+      border-radius:18px;
+      border:1px solid rgba(94,227,255,.12);
+      background: rgba(7, 15, 35, .55);
+      padding:12px;
+    }
+    .prizeList ul{
+      margin:8px 0 0 18px;
+      padding:0;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.6;
+    }
+    .prizeList li{ margin:4px 0; }
+    @media (max-width: 820px){
+      .prizeGrid{ grid-template-columns: 1fr; }
+      .giftImg{ max-height:200px; }
+    }
+
     .toast{
-      position:fixed; left:50%; bottom:18px; transform:translateX(-50%);
+      position:fixed;
+      left:50%;
+      bottom:18px;
+      transform:translateX(-50%);
       background: rgba(6, 12, 28, .98);
       border:1px solid rgba(94,227,255,.20);
-      border-radius:16px; padding:10px 12px;
-      color:var(--text); font-size:13px;
+      border-radius:16px;
+      padding:10px 12px;
+      color:var(--text);
+      font-size:13px;
       box-shadow:0 14px 40px rgba(0,0,0,.45);
-      opacity:0; pointer-events:none;
+      opacity:0;
+      pointer-events:none;
       transition:opacity .2s ease, transform .2s ease;
     }
-    .toast.show{ opacity:1; transform:translateX(-50%) translateY(-6px); }
+    .toast.show{
+      opacity:1;
+      transform:translateX(-50%) translateY(-6px);
+    }
   </style>
 </head>
+
 <body>
-  <div class="card">
-    <div class="top">
-      <div>
-        <h1>realme <span class="glow">3.3</span> MEGA CAMPAIGN — Lucky Code Game</h1>
-        <p class="sub">กรอก Lucky Code เพื่อดูผลรางวัลของคุณ (โค้ด 1 อัน สุ่มได้ครั้งเดียวและ “ล็อกผล” ไว้เลย)</p>
-      </div>
-      <div class="pill">
-        <span>สถานะ:</span>
-        <b id="accessState" class="warn">ยังไม่ปลดล็อก</b>
+  <div class="wrap">
+
+    <!-- ===== HERO (ทำให้เว็บไม่โล่ง) ===== -->
+    <div class="hero">
+      <div class="heroGlow"></div>
+      <div class="heroInner">
+        <div>
+          <h2 class="heroTitle">realme <span class="glow">3.3</span> MEGA CAMPAIGN — Lucky Code Game</h2>
+          <p class="heroSub">
+            กรอก Lucky Code เพื่อดูผลรางวัลของคุณ (โค้ด 1 อัน สุ่มได้ครั้งเดียวและ “ล็อกผล” ไว้เลย)
+            <br/>ทีมงานจะดำเนินการจัดส่งโค้ดของรางวัลให้ภายในวันที่ <b>13 มีนาคม 2026</b>
+          </p>
+          <div class="heroBadges">
+            <span class="badge">⚡ POWER MODE ON</span>
+            <span class="badge">🔒 1 โค้ด = 1 สิทธิ์ (ล็อกผล)</span>
+            <span class="badge">🎁 ของรางวัลจำนวนจำกัด</span>
+          </div>
+        </div>
+
+        <div class="heroArt">
+          <!-- เปลี่ยนชื่อไฟล์ให้ตรงกับที่อัปโหลด -->
+          <img src="phone.png" class="phoneImg" alt="realme phone" />
+        </div>
       </div>
     </div>
 
-    <div class="slot">
-      <div class="glowRing"></div>
-
-      <div class="window">
-        <div class="tickerSmall" id="tickerSmall">กรอกโค้ดเพื่อเล่น</div>
-        <div class="tickerBig" id="tickerBig">ใส่โค้ด แล้วกด “ยืนยันโค้ด”</div>
+    <!-- ===== GAME CARD ===== -->
+    <div class="card">
+      <div class="top">
+        <div>
+          <h1 class="title">กรอกโค้ดเพื่อเล่นเกม</h1>
+          <p class="sub">ระบบจะแสดงผลเดิมทันทีถ้าโค้ดนี้เคยสุ่มแล้ว เพื่อป้องกันการสุ่มซ้ำจนได้ของที่ต้องการ</p>
+        </div>
+        <div class="pill">
+          <span>สถานะ:</span>
+          <b id="accessState" class="warn">ยังไม่ปลดล็อก</b>
+        </div>
       </div>
 
-      <div class="row">
-        <input id="codeInput" placeholder="กรอกโค้ด เช่น REAL111A1" autocomplete="off" />
-        <button id="btnVerify" class="primary">ยืนยันโค้ด</button>
-      </div>
+      <div class="slot">
+        <div class="glowRing"></div>
 
-      <div class="actions">
-        <button id="btnSpin" class="primary" disabled>สุ่มของแถม</button>
-        <button id="btnCopy" class="ghost" disabled>คัดลอกผลลัพธ์</button>
-        <button id="btnReset" class="ghost">รีเซ็ตหน้าจอ</button>
-      </div>
+        <div class="window">
+          <div class="tickerSmall" id="tickerSmall">กรอกโค้ดเพื่อเล่น</div>
+          <div class="tickerBig" id="tickerBig">ใส่โค้ด แล้วกด “ยืนยันโค้ด”</div>
+        </div>
 
-      <div class="result" id="resultBox" style="display:none;">
-        <div class="label">🎉 ผลลัพธ์ของคุณ</div>
-        <div class="gift" id="resultText">-</div>
-      </div>
+        <div class="row">
+          <input id="codeInput" placeholder="กรอกโค้ด เช่น REAL111A1" autocomplete="off" />
+          <button id="btnVerify" class="primary">ยืนยันโค้ด</button>
+        </div>
 
-      <div class="hint">
-        *ถ้าโค้ดนี้เคยสุ่มแล้ว ระบบจะแสดงผลเดิมทันที (ไม่สุ่มใหม่) เพื่อกันกดซ้ำหาไอเทมที่ต้องการ<br>
-        *หมายเหตุ: กันซ้ำระดับ “เครื่อง/เบราว์เซอร์เดียว” (localStorage)
+        <div class="actions">
+          <button id="btnSpin" class="primary" disabled>สุ่มของแถม</button>
+          <button id="btnCopy" class="ghost" disabled>คัดลอกผลลัพธ์</button>
+          <button id="btnReset" class="ghost">รีเซ็ตหน้าจอ</button>
+        </div>
+
+        <div class="result" id="resultBox" style="display:none;">
+          <div class="label">🎉 ผลลัพธ์ของคุณ</div>
+          <div class="gift" id="resultText">-</div>
+        </div>
+
+        <div class="hint">
+          *ถ้าโค้ดนี้เคยสุ่มแล้ว ระบบจะแสดงผลเดิมทันที (ไม่สุ่มใหม่) เพื่อกันกดซ้ำหาไอเทมที่ต้องการ<br>
+          *หมายเหตุ: กันซ้ำระดับ “เครื่อง/เบราว์เซอร์เดียว” (localStorage)
+        </div>
       </div>
     </div>
+
+    <!-- ===== PRIZES (เติมพื้นที่ให้ไม่โล่ง) ===== -->
+    <div class="prizes">
+      <div class="prizeHead">
+        <p class="prizeTitle">🎁 ของรางวัล Lucky Code</p>
+        <p class="prizeNote">*รางวัลมีจำนวนจำกัด ตามเงื่อนไขกิจกรรม</p>
+      </div>
+
+      <div class="prizeGrid">
+        <!-- เปลี่ยนชื่อไฟล์ให้ตรงกับที่อัปโหลด -->
+        <img src="gift.png" class="giftImg" alt="gift" />
+
+        <div class="prizeList">
+          <b style="color:var(--text)">รายการของรางวัล</b>
+          <ul>
+            <li>realme Fan — 10 ชิ้น</li>
+            <li>realme cross body bag — 10 ชิ้น</li>
+            <li>realme gray bag — 10 ชิ้น</li>
+            <li>เสียใจด้วยคุณไม่ได้รับรางวัล — 100</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <div class="toast" id="toast">คัดลอกแล้ว</div>
 
   <script>
     // ===== 1) โค้ดที่อนุญาต =====
-    // (คุณสามารถแทนที่ด้วยลิสต์เต็มของคุณได้ — ผมใส่ตัวอย่างสั้นไว้)
+    // ใส่ลิสต์เต็มของคุณได้เลย (ผมเว้นไว้ตามที่คุณใช้อยู่)
     const ALLOWED_CODES_RAW = `
 REAL111A1
 REAL112A2
@@ -670,7 +969,6 @@ REAL209A405
     }
 
     // ===== Storage: "LOCK RESULT" by code =====
-    // saved shape: { "REAL111A1": "🎁 คุณได้รับ: realme Fan", ... }
     const LS_KEY_RESULT = "realme_33_locked_results_v1";
 
     function loadResults(){
@@ -714,7 +1012,6 @@ REAL209A405
       $("resultText").textContent = "-";
     }
     function updateButtons(){
-      // ถ้ามีผลล็อกแล้ว => ปิดปุ่มสุ่มไปเลย
       const locked = unlockedCode ? !!getLockedResult(unlockedCode) : false;
       $("btnSpin").disabled = !(unlockedCode && !spinning && !locked);
       $("btnCopy").disabled = !lastResult;
@@ -736,7 +1033,6 @@ REAL209A405
 
       unlockedCode = code;
 
-      // ถ้าเคยสุ่มแล้ว ให้โชว์ผลเดิมทันที (LOCK)
       const locked = getLockedResult(code);
       if(locked){
         lastResult = locked;
@@ -748,7 +1044,6 @@ REAL209A405
         return;
       }
 
-      // ยังไม่เคยสุ่ม
       lastResult = "";
       hideResult();
       setAccessState("ปลดล็อกแล้ว ✅", "ok");
@@ -760,7 +1055,6 @@ REAL209A405
     async function spin(){
       if(spinning || !unlockedCode) return;
 
-      // ถ้ามีผลล็อกแล้ว ห้ามสุ่มซ้ำ
       const locked = getLockedResult(unlockedCode);
       if(locked){
         lastResult = locked;
@@ -775,8 +1069,7 @@ REAL209A405
       updateButtons();
       hideResult();
 
-      // Animation
-      const duration = 3200;
+      const duration = 2800;
       const startSpeed = 45;
 
       setTicker("กำลังสุ่ม…", "⚡ POWER MODE ON");
@@ -796,7 +1089,6 @@ REAL209A405
         await new Promise(res => setTimeout(res, delay));
       }
 
-      // Pick final and LOCK it
       const winner = pickWeighted(GIFTS).name;
       lastResult = winner;
       lockResult(unlockedCode, winner);
@@ -811,7 +1103,6 @@ REAL209A405
 
     $("btnVerify").addEventListener("click", verifyCode);
     $("codeInput").addEventListener("keydown", (e)=>{ if(e.key === "Enter") verifyCode(); });
-
     $("btnSpin").addEventListener("click", spin);
 
     $("btnCopy").addEventListener("click", async ()=>{
